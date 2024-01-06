@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 10px;
+  padding: 0px;
+}
+
+.navcont {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 80px;
+  /* position: fixed; */
+}
+.logo {
+  cursor: pointer;
+}
+.logo:hover {
+  color: rgb(91, 0, 157);
+}
+li {
+  list-style: none;
+}
+a:hover {
+  color: rgb(91, 0, 157);
+}
