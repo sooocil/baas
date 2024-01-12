@@ -1,7 +1,7 @@
 //Content Management System (cms)
 import React from "react";
 import Bbutton from "../Component/back_button";
-import NavBar from "./NavBar";
+import NavBar from "../Component/NavBar";
 import "../css/Cms.css";
 import { Helmet } from "react-helmet";
 import { Computer, User, Bed } from "lucide-react";

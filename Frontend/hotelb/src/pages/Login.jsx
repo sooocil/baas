@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/login.css";
-import NavBar from "./NavBar";
+import NavBar from "../Component/NavBar";
 import { Helmet } from "react-helmet";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
