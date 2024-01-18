@@ -26,7 +26,7 @@ const Cms = () => {
       </Helmet>
       <NavBar />
       <ToastContainer />
-      <div className="container">
+      <div className="cms_container">
         <div className="left_sidebar">
           Admin Pannel
           <ul style={{ margin: "20px" }}>

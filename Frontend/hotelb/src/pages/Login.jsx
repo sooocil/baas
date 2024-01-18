@@ -53,7 +53,7 @@ const Login = () => {
       </Helmet>
       <NavBar />
       <title>Login</title>
-      <div className="container">
+      <div className="login_container">
         {/* <h1>Login</h1> */}
         <div className="popup">
           <form onSubmit={handlesubmit} method="post">

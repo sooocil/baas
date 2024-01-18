@@ -11,7 +11,7 @@ export const HomeNav = () => {
       <div className="main">
         <ul>
           <li>
-            <Heart /> <a href="#">Favourites</a>
+            <Heart /> <a href="/fav">Favourites</a>
           </li>
           <li>
             <User />
