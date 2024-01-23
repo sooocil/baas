@@ -22,13 +22,20 @@ app.post("/register", async (req, res) => {
   try {
     // Create a new user document and save it to the database
     const newUser = new User({ username, password });
+    // const user = await User.findOne({ username });
+    // if (user && user.username === username) {
+    //   return res.status(409).send("Username already exists.");
+    // }
     await newUser.save();
-
     // Respond with a success message
     res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
-    console.error("Error during registration:", error);
-    res.status(500).json({ message: "Internal server error" });
+    res
+      .status(500)
+      .json({
+        message: "Internal server error ",
+        error: "Username is already taken",
+      });
   }
 });
 
@@ -38,7 +45,6 @@ app.post("/login", async (req, res) => {
   try {
     // Find the user in the database
     const user = await User.findOne({ username });
-
     // Check if the user exists and the password matches
     if (user && user.password === password) {
       // Successful login

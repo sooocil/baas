@@ -7,6 +7,7 @@ import { useState } from "react";
 import axios from "axios";
 import { User, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 const Signup = () => {
   const [username, setUsername] = useState("");
@@ -23,6 +24,9 @@ const Signup = () => {
           username,
           password,
         });
+        // toast.success("Logged In Success", {
+        //   theme: "dark",
+        // });
         console.log(response);
         navigate("/login");
       }
@@ -33,6 +37,7 @@ const Signup = () => {
 
   return (
     <div>
+      <ToastContainer />
       <Helmet>
         <title>{title}</title>
       </Helmet>
