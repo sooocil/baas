@@ -39,3 +39,81 @@
   cursor: pointer;
   color: indigo;
 }
+
+/* CMS nav bar  styles */
+
+.cmsnavcontainer {
+  background-color: rgb(244, 244, 244);
+  padding: 0px 10px;
+  border-bottom: 2px solid rgb(225, 225, 225);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  flex-direction: row;
+  align-items: center;
+  gap: 600px;
+}
+
+.DropDown {
+  border: 2px solid rgb(185, 185, 185);
+  padding: 6px 24px;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+  padding: 5px 20px;
+}
+.DropDown:hover {
+  scale: 1.08;
+
+  background-color: rgb(27, 27, 27);
+  color: white;
+}
+
+.cmsnavsections {
+  /* background-color: blueviolet; */
+  padding: 6px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+}
+
+.navsearch {
+  border: 2 px solid rgb(0, 0, 0);
+  caret-color: rgba(0, 0, 0, 0.542);
+  padding: 5px;
+  padding-left: 20px;
+  border-radius: 10px;
+}
+
+.cmsnotifi {
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+}
+.cmsnotifi:hover {
+  scale: 1.08;
+  animation: rotatenotify 0.7s ease-out;
+}
+
+@keyframes rotatenotify {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  50% {
+    transform: rotateZ(10deg);
+  }
+  100% {
+    transform: rotateZ(0deg);
+  }
+}
+
+.navright {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 30px;
+}
+.cmsmaincontainer {
+  padding: 50px 125px;
+}

@@ -6,6 +6,11 @@ import Signup from "./pages/Signup";
 import Cms from "./pages/Cms";
 import { Fav } from "./pages/Fav";
 import NavBar from "./Component/NavBar";
+import { CmsBookings } from "./Component/cms/CmsBookings";
+import { CmsRooms } from "./Component/cms/CmsRooms";
+import { CmsSetting } from "./Component/cms/CmsSetting";
+import { CmsOverview } from "./Component/cms/CmsOverview";
+import { CmsNotification } from "./Component/cms/CmsNotification";
 
 function App() {
   return (
@@ -16,6 +21,11 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/cms" element={<Cms />} />
+        <Route path="/cms/overview" element={<CmsOverview />} />
+        <Route path="/cms/rooms" element={<CmsRooms />} />
+        <Route path="/cms/booking" element={<CmsBookings />} />
+        <Route path="/cms/setting" element={<CmsSetting />} />
+        <Route path="/cms/notification" element={<CmsNotification />} />
       </Routes>
     </div>
   );
