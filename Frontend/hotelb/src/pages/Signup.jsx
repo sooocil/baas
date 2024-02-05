@@ -41,7 +41,6 @@ const Signup = () => {
       <Helmet>
         <title>{title}</title>
       </Helmet>
-      <NavBar />
       <div className="popup">
         <form onSubmit={register} method="post">
           <h1 className="title">Sign Up</h1>

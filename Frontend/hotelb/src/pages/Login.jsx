@@ -51,7 +51,6 @@ const Login = () => {
       <Helmet>
         <title>{title}</title>
       </Helmet>
-      <NavBar />
       <title>Login</title>
       <div className="login_container">
         {/* <h1>Login</h1> */}

@@ -3,47 +3,11 @@
   flex-direction: row;
   gap: 20px;
 }
-.left_sidebar {
-  /* background-color: red; */
-  height: 100vh;
-  width: 50wh;
-  padding: 50px;
-  padding-top: 105px;
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: center;
-  position: sticky;
-}
-
-.middle {
-  background-color: purple;
-  height: 100vh;
-  width: 50wh;
-  align-items: center;
-  justify-content: center;
-}
-
-.User,
-.BedRooms,
-.Staff {
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  margin: 10px;
-}
-
-.User:hover,
-.BedRooms:hover,
-.Staff:hover {
-  cursor: pointer;
-  color: indigo;
-}
 
 /* CMS nav bar  styles */
 
 .cmsnavcontainer {
-  background-color: rgb(244, 244, 244);
+  background-color: #f2f2f2;
   padding: 0px 10px;
   border-bottom: 2px solid rgb(225, 225, 225);
   display: flex;
@@ -52,6 +16,7 @@
   flex-direction: row;
   align-items: center;
   gap: 600px;
+  user-select: none;
 }
 
 .DropDown {
@@ -85,11 +50,16 @@
   padding: 5px;
   padding-left: 20px;
   border-radius: 10px;
+  box-sizing: border-box;
+}
+.navsearch:focus {
+  border: 2px solid gray;
 }
 
 .cmsnotifi {
   cursor: pointer;
-  transition: all 0.1s ease-in-out;
+  transition-delay: 10ms;
+  transition: all ease-in-out;
 }
 .cmsnotifi:hover {
   scale: 1.08;
@@ -112,8 +82,75 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  flex-wrap: wrap;
   gap: 30px;
 }
 .cmsmaincontainer {
   padding: 50px 125px;
+}
+
+/* CMS OVERVIEW */
+
+/* .mainoverviewcontent {
+  display: flex;
+  flex-direction: row;
+} */
+
+.topovdiv {
+  background-color: rgb(235, 235, 235);
+  width: 10%;
+  height: 15vh;
+  border-radius: 20px;
+  display: flex;
+  gap: 15px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+#stat1 {
+  background-color: #74bca29c;
+}
+
+#stat2 {
+  background-color: #544390b6;
+}
+#stat3 {
+  background-color: #ff3e48d1;
+}
+
+/* Rooms Css Goes Here */
+
+.roomstable {
+  background-color: white;
+  border-radius: 3px;
+}
+
+.navright button {
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: rgb(206, 206, 206);
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  margin: 20px;
+  transition: 0.1s ease-in;
+}
+
+.navright button:hover {
+  background-color: rgb(27, 27, 27);
+  color: white;
+  scale: 1.05;
+  box-shadow: 0.2px 1.6px 1.2px rgba(0, 0, 0, 0.025),
+    0.3px 3.4px 2.7px rgba(0, 0, 0, 0.035),
+    0.6px 5.8px 4.6px rgba(0, 0, 0, 0.043);
+}
+.roomsedit {
+  display: flex;
+  margin: 10px;
+  /* background-color: #544390b6; */
+  border-radius: 10%;
 }

@@ -1,8 +1,9 @@
 import React from "react";
 import "../../css/Cms.css";
 import { Bell } from "lucide-react";
+import { CmsRooms } from "./CmsRooms";
 
-export const CmsNav = () => {
+export const CmsNav = (props) => {
   return (
     <div className="cmsnavcontainer p-[-20px] ">
       <div className="cmsnavsections">
@@ -23,7 +24,12 @@ export const CmsNav = () => {
         </li>
       </div>
       <div className="navright">
-        <input className=" navsearch" type="text" placeholder="Search...." />
+        <input
+          className=" navsearch"
+          type="text"
+          onChange={props.doit}
+          placeholder="Search...."
+        />
         <div className="cmsnotifi">
           <a href="/cms/notification">
             <Bell />
