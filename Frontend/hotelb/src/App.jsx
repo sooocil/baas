@@ -20,7 +20,7 @@ function App() {
         <Route path="/fav" element={<Fav />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/cms" element={<Cms />} />
+        <Route path="/cms" element={<CmsOverview />} />
         <Route path="/cms/overview" element={<CmsOverview />} />
         <Route path="/cms/rooms" element={<CmsRooms />} />
         <Route path="/cms/booking" element={<CmsBookings />} />

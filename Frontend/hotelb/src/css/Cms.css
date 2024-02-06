@@ -154,3 +154,61 @@
   /* background-color: #544390b6; */
   border-radius: 10%;
 }
+.roomAdderModal {
+  z-index: 100;
+}
+
+.DataTable {
+  z-index: 50;
+}
+
+.roomAdder {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffffffb6;
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+.roomAdder form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+}
+
+.roomAdder h1 {
+  position: relative;
+  width: max-content;
+  height: max-content;
+  margin-bottom: 50px;
+}
+
+.roomAdder input {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgb(0, 0, 0);
+  box-sizing: border-box;
+  color: indigo;
+}
+
+.maininputdiv {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.leftinputs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.rightinputs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
