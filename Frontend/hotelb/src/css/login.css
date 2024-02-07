@@ -54,7 +54,7 @@ form {
   align-items: center;
   gap: 10px;
 }
-input {
+form input {
   caret-color: rgba(0, 0, 0, 0.542);
   box-sizing: content-box;
   padding: 5px;
@@ -62,7 +62,7 @@ input {
   border-radius: 10px;
 }
 
-input:focus {
+form input:focus {
   outline: none;
 }
 .title {

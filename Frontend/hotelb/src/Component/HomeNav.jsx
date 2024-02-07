@@ -1,28 +1,21 @@
 import React from "react";
-import "../css/homeNav.css";
+import "../css/home.css";
 import { Heart, UserPlus, User } from "lucide-react";
+import { DatePickerpick } from "../Component/Home/DatePicker";
+import { useNavigate } from "react-router-dom";
+import HomeDropdown from "./Home/HomeDropdown";
 
 export const HomeNav = () => {
+  const navigate = useNavigate();
   return (
-    <div className="container">
+    <div className="homeNavContainer w-full fixed p-4  text-white top-0 bg-black bg-opacity-0  ">
       <div className="logo">
-        <h1>Your_Lodge</h1>
+        <a href={"/"} className="select-none text-3xl cursor-pointer">
+          BAAS
+        </a>
       </div>
-      <div className="main">
-        <ul>
-          <li>
-            <Heart /> <a href="/fav">Favourites</a>
-          </li>
-          <li>
-            <User />
-            <a href="/login">Sign In</a>
-          </li>
-          <li>
-            <UserPlus />
-            <a href="/signup">Sign Up</a>
-          </li>
-        </ul>
-      </div>
+      <DatePickerpick />
+      <HomeDropdown />
     </div>
   );
 };

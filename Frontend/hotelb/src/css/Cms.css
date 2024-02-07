@@ -32,6 +32,23 @@
   background-color: rgb(27, 27, 27);
   color: white;
 }
+.cmsnavsections li {
+  list-style: none;
+  padding: 5px 15px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+.cmsnavsections li:hover {
+  background-color: rgb(27, 27, 27);
+  color: white;
+  border-radius: 10px;
+  scale: 1.08;
+  transition: all 0.1s ease-in-out;
+}
 
 .cmsnavsections {
   /* background-color: blueviolet; */

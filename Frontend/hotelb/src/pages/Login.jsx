@@ -56,7 +56,7 @@ const Login = () => {
         {/* <h1>Login</h1> */}
         <div className="popup">
           <form onSubmit={handlesubmit} method="post">
-            <h1 className="title">LOGIN</h1>
+            <h1 className="title">Sign IN</h1>
             <h4>Login with your existing account</h4>
             <input
               type="text"
