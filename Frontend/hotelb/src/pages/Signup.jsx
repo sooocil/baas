@@ -11,7 +11,9 @@ import { ToastContainer, toast } from "react-toastify";
 
 const Signup = () => {
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [navmsg, setnavmsg] = useState(false);
   const navigate = useNavigate();
   const title = "Sign Up";
 
@@ -21,18 +23,28 @@ const Signup = () => {
     try {
       if (username && password) {
         const response = await axios.post("http://127.0.0.1:3000/register", {
+          email,
           username,
           password,
         });
-        // toast.success("Logged In Success", {
-        //   theme: "dark",
-        // });
-        console.log(response);
-        navigate("/login");
+        setTimeout(() => {
+          toast.success("Signed Up", {
+            theme: "dark",
+          });
+          setnavmsg(true);
+        }, 1000);
       }
     } catch (error) {
       console.error("Error during registration:", error);
     }
+  };
+
+  const Bbutton = () => {
+    return (
+      <>
+        <h1>Go to Sign In</h1>
+      </>
+    );
   };
 
   return (
@@ -52,6 +64,13 @@ const Signup = () => {
             onChange={(e) => setUsername(e.target.value)}
             required
           />
+          <input
+            type="email"
+            placeholder="Email"
+            name="email"
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
 
           <input
             type="password"
@@ -62,10 +81,12 @@ const Signup = () => {
           />
 
           <button>Register</button>
+          {navmsg && <Bbutton />}
+
           <p>
             Already have an account?
             <a href="/login">
-              <strong>Login</strong>
+              <strong> Sign In</strong>
             </a>
           </p>
         </form>

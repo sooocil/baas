@@ -1,6 +1,6 @@
 import React from "react";
 import "../css/home.css";
-import { HomeNav } from "../Component/HomeNav";
+import HomeNav from "../Component/HomeNav";
 
 export const Fav = () => {
   return (

@@ -1,58 +1,65 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../css/home.css";
-import { HomeNav } from "../Component/HomeNav";
-import homebg1 from "../assets/homebg1.jpg";
+import HomeNav from "../Component/HomeNav";
+import { RoomsCard } from "../Component/Home/RoomsCard";
+import img1 from "../assets/img3.jpg";
+// import { roomdata } from "../Component/Home/roomContens.jsx";
+import axios from "axios";
+// import { useFetch } from "../hooks/useFetch";
 
 const Home = () => {
-  // console.log(rooms);
+  // const { data, loading, error, reFetch } = useFetch(
+  //   "http://localhost:3001/rooms"
+  // );
+
+  const [hotels, setHotels] = useState([]);
+  const [roomdata, setRoomData] = useState([]);
+
+  useEffect(() => {
+    axios.get("http://127.0.0.1:3000").then(
+      (response) => {
+        setRoomData(response.data);
+      },
+      (error) => {
+        console.error("Error fetching rooms:", error);
+      }
+    );
+  }, []);
+
+  // useEffect(() => {
+  //   axios.get("http://127.0.0.1:3000/rooms").then(
+  //     (response) => {
+  //       setHotels(response.data);
+  //     },
+  //     (error) => {
+  //       console.error("Error fetching rooms:", error);
+  //     }
+  //   );
+  // }, []);
+
+  console.log(roomdata);
   return (
-    <div className="homeContainer m-0 p-0">
-      <HomeNav className="backdrop-blur-sm bg-black" />
-      <div className="homeImage relative"></div>
-      <h1 className="text-white absolute text-4xl top-1/2 select-none">
-        Reserve Your Slice of Relaxation
-      </h1>
-      <div className="othercontent">
-        <div className="text-white text-3xl">
-          <h1>Find your perfect stay</h1>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere non,
-            perspiciatis corporis exercitationem voluptas provident cumque
-            quisquam aperiam at! Sit unde incidunt quidem distinctio officia
-            atque impedit? Nostrum, debitis consequuntur? Similique a non neque
-            officiis sed distinctio perspiciatis esse quidem dolores molestias,
-            aspernatur commodi quis eius beatae eaque veniam? Totam rerum ipsum
-            officiis sit vero earum tenetur dicta harum repellat! Totam,
-            molestiae eveniet quibusdam ipsam mollitia aliquam quae sapiente
-            officia ipsum perferendis necessitatibus dicta nemo sint error,
-            magnam voluptas recusandae rem iure reprehenderit doloremque commodi
-            dolore facere similique hic? Autem? Ex officia vero fugit, culpa,
-            natus ea dolore a esse nisi dolor soluta voluptatem, debitis libero
-            quasi eveniet quo fuga enim illo eius earum vel. Nisi tempora sint
-            quia sequi? Quo, quod iste recusandae maiores, repellat debitis
-            quibusdam nostrum assumenda similique unde facilis, cum excepturi ut
-            blanditiis soluta est temporibus itaque aut qui libero esse quidem.
-            Atque quia magnam recusandae? Repudiandae explicabo et alias tempora
-            vitae perspiciatis? A sequi debitis sunt ipsa pariatur eaque.
-            Adipisci asperiores modi impedit consequuntur at rerum, consequatur
-            quisquam qui accusamus fugit! Nostrum esse cum adipisci. Iure qui
-            dolor officiis at vitae temporibus illum error quasi vel saepe
-            voluptatibus expedita adipisci maxime possimus soluta enim, aperiam
-            accusamus quia hic id a corporis! Praesentium eos distinctio
-            tempora. Eos, fuga. Doloremque amet, facere delectus soluta
-            obcaecati, explicabo voluptas consequatur illum non accusamus quasi
-            ex numquam quas nam quaerat blanditiis deleniti culpa molestiae
-            animi ut deserunt. Dolorum, consequatur hic. Aliquid soluta, est
-            exercitationem fugiat tempore eos placeat veniam quas similique
-            earum. Illum harum quisquam similique, reprehenderit dolorum hic
-            consequuntur tempore incidunt? Possimus atque reprehenderit illo
-            labore doloribus adipisci dolor. Quae ullam nihil ipsam molestias.
-            Praesentium, velit? Voluptas eligendi veritatis quam corporis
-            consequatur tempore esse ipsam, magnam atque, alias molestiae.
-            Repellat, minus! Aperiam inventore eligendi culpa sed doloremque ea
-            molestiae!
-          </p>
-        </div>
+    <div className="h-screen w-full">
+      <div className="homeContainer bg-black m-0 p-0">
+        <HomeNav className="backdrop-blur-sm bg-black" />
+        <div className="homeImage relative"></div>
+        <h1 className="text-white absolute text-4xl top-1/2 select-none">
+          Reserve Your Slice of Relaxation
+        </h1>
+      </div>
+      <div className="homeOtherContent bg-black p-20 pl-[170px]">
+        {roomdata.map((roomdata, index) => {
+          return (
+            <RoomsCard
+              key={index}
+              Image={img1}
+              roomno={roomdata.roomno}
+              roomname={roomdata.roomname}
+              rent={roomdata.rent}
+              description={roomdata.description}
+            />
+          );
+        })}
       </div>
     </div>
   );

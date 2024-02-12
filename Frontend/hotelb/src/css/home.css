@@ -7,9 +7,7 @@ body {
 }
 
 .homeContainer {
-  background-color: rgb(180, 180, 180);
   display: flex;
-  color: black;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -55,10 +53,10 @@ body {
 .homeImage {
   position: relative;
   width: 100%;
-  height: 80vh;
+  height: 65vh;
   background-image: url("../assets/img2.jpg");
   object-fit: cover;
-  background-position: center bottom;
+  background-position: bottom center;
   background-size: 100%;
   background-repeat: no-repeat;
 }
@@ -72,4 +70,104 @@ body {
   left: 0;
   background: rgba(0, 0, 0, 0.394);
   backdrop-filter: blur(5px);
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.402) 0%,
+    rgb(0, 0, 0) 100%
+  );
+}
+
+.roomImageContainer img {
+  object-fit: cover;
+  width: 20vw;
+  height: 30vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 10px;
+  transition: all 0.3s ease-in-out;
+  border-radius: 10px;
+}
+
+.cardContainer {
+  background-color: black;
+  width: 20em;
+  height: 20em;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.homeOtherContent {
+  display: grid;
+  place-items: center;
+  justify-content: center;
+  grid-template-columns: 450px 450px 450px;
+  grid-template-rows: 450px;
+}
+.cardContainer img:hover {
+  cursor: pointer;
+  transform: scale(1.03);
+  transition: transform 0.5s;
+}
+
+.roomDetailImageContainer {
+  margin: 5em 13em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.5s ease;
+}
+
+.roomDetailImageContainer img:hover {
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.roomDetailImageContainer .left {
+  width: max-content;
+  height: min-content;
+}
+.roomDetailImageContainer .left img {
+  border-radius: 10px;
+  width: 43em;
+  height: fit-content;
+}
+
+.roomDetailImageContainer .rtop {
+  margin: 1em;
+  width: 20em;
+  height: min-content;
+}
+.roomDetailImageContainer .rtop img {
+  border-radius: 10px;
+  width: 20em;
+  height: fit-content;
+}
+.roomDetailImageContainer .rbuttom {
+  width: 20em;
+  height: min-content;
+}
+.roomDetailImageContainer .rbuttom img {
+  border-radius: 10px;
+  width: 20em;
+  height: fit-content;
+}
+.roomDetailImageContainer .rightTwo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.detailbox {
+  width: min-content;
+  padding: 20px;
+}
+.detailbox p {
+  width: 80em;
 }

@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Dropdown, Space } from "antd";
 import { UserPlus, User, ChevronDown } from "lucide-react";
+
 const items = [
   {
     key: "1",
@@ -27,10 +28,6 @@ const items = [
   },
 ];
 
-export const dropdown = () => {
-  return <ChevronDown />;
-};
-
 export const HomeDropdown = () => (
   <Space direction="horizontal">
     <Space wrap>
@@ -43,8 +40,7 @@ export const HomeDropdown = () => (
         placement="bottom"
       >
         <Button className="hover:bg-black text-white" tabIndex={-1}>
-          <ChevronDown />
-          <dropdown />
+          <ChevronDown className="text-white" />
         </Button>
       </Dropdown>
     </Space>

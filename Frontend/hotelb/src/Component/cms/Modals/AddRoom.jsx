@@ -25,18 +25,21 @@ export const AddRoom = (onCancel) => {
   const submitRoomAdd = async (e) => {
     e.preventDefault();
     try {
+      const description = document.getElementById("description").value;
+
       await axios.post("http://localhost:3000/addrooms", {
         roomno,
+        description,
         roomtype,
         capacity,
         acnonac,
         rent,
         status,
       });
-      toast.success("Room Added Successfully!");
       setTimeout(() => {
         window.location.reload(true);
       }, 1000);
+      toast.success("Room Added Successfully!");
     } catch (err) {
       alert("Room Number exist");
 
@@ -70,6 +73,14 @@ export const AddRoom = (onCancel) => {
                 }}
                 required
               />
+              <label htmlFor="description">Description</label>
+              <textarea
+                name="description"
+                id="description"
+                cols="20"
+                rows="5"
+                className="p-2 text-thin"
+              ></textarea>
               <label htmlFor="roomtype">Type of the Room</label>
               <select
                 className="bg-gray-50 border   text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -120,8 +131,8 @@ export const AddRoom = (onCancel) => {
                 onChange={(e) => setStatus(e.target.value)}
                 required
               >
-                <option value="Single">Available</option>
-                <option value="Non Ac">Booked</option>
+                <option value="Available">Available</option>
+                <option value="Booked">Booked</option>
               </select>
             </div>
             <div className="buttominputs">

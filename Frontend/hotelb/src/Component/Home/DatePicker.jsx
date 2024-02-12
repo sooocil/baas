@@ -23,6 +23,9 @@ export const DatePickerpick = () => {
   return (
     <Space direction="horizontal" color="black" size={10}>
       <RangePicker
+        activeBg="black"
+        multipleItemBg={"black"}
+        activeBorderColor={"black"}
         className="rangePicker placeholder-text-white text-black bg-white hover:border-blue-500 border-2 text-2xl hover:bg-white  p-1 hover:rounded-md transition-all"
         size="large"
         color="black"
@@ -30,12 +33,15 @@ export const DatePickerpick = () => {
         capture="hover"
         variant="filled"
         onChange={checkValue}
+        inline
       />
       <Search
         onClick={nullInput}
-        className="hover:bg-black rounded-lg hover:text-white p-1 hover:rounded-md transition-all duration-300 ease-in-out  active:scale-95 text-2xl  "
+        className="hover:bg-white rounded-2xl hover:text-black p-1 hover:rounded-2xl transition-all duration-300 ease-in-out  active:scale-90 text-2xl ease "
         size={35}
       />
     </Space>
   );
 };
+
+export default DatePickerpick;

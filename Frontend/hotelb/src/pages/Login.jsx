@@ -56,15 +56,21 @@ const Login = () => {
         {/* <h1>Login</h1> */}
         <div className="popup">
           <form onSubmit={handlesubmit} method="post">
-            <h1 className="title">Sign IN</h1>
-            <h4>Login with your existing account</h4>
+            <h1 className="title text-3xl">Sign IN</h1>
+            <h4 className="text-xl">Login with your existing account</h4>
+            <label className="text-xs self-start ml-24" htmlFor="">
+              Email or Username
+            </label>
             <input
               type="text"
-              placeholder="Username"
+              placeholder="Username or Email"
               required
               name="username"
               onChange={(e) => setUsername(e.target.value)}
             />
+            <label className="text-xs self-start ml-24" htmlFor="">
+              Password
+            </label>
             <input
               type="password"
               placeholder="Password"
@@ -77,7 +83,6 @@ const Login = () => {
             <p>
               Don't have an account?
               <a href="/signup">
-                {" "}
                 <strong>Sign Up</strong>
               </a>
             </p>

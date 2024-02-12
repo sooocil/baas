@@ -7,28 +7,29 @@
 /* CMS nav bar  styles */
 
 .cmsnavcontainer {
-  background-color: #f2f2f2;
+  background-color: #7658ff;
+  color: white;
   padding: 0px 10px;
   border-bottom: 2px solid rgb(225, 225, 225);
   display: flex;
-  flex-wrap: wrap;
   justify-content: space-evenly;
   flex-direction: row;
   align-items: center;
-  gap: 600px;
+  gap: 300px;
   user-select: none;
 }
 
 .DropDown {
-  border: 2px solid rgb(185, 185, 185);
-  padding: 6px 24px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  border: 2px solid black;
   cursor: pointer;
+  padding: 5px 15px;
+  border-radius: 10px;
   transition: all 0.1s ease-in-out;
-  padding: 5px 20px;
 }
 .DropDown:hover {
-  scale: 1.08;
-
   background-color: rgb(27, 27, 27);
   color: white;
 }
@@ -42,11 +43,11 @@
   align-items: center;
   gap: 5px;
 }
+
 .cmsnavsections li:hover {
   background-color: rgb(27, 27, 27);
   color: white;
   border-radius: 10px;
-  scale: 1.08;
   transition: all 0.1s ease-in-out;
 }
 
@@ -69,8 +70,8 @@
   border-radius: 10px;
   box-sizing: border-box;
 }
-.navsearch:focus {
-  border: 2px solid gray;
+.navsearch:active {
+  border: none;
 }
 
 .cmsnotifi {
@@ -149,7 +150,8 @@
   padding: 10px;
   padding-left: 20px;
   padding-right: 20px;
-  background-color: rgb(206, 206, 206);
+  background-color: #ffffff;
+  color: black;
   border-radius: 10px;
   border: none;
   cursor: pointer;
@@ -160,10 +162,9 @@
 .navright button:hover {
   background-color: rgb(27, 27, 27);
   color: white;
-  scale: 1.05;
   box-shadow: 0.2px 1.6px 1.2px rgba(0, 0, 0, 0.025),
     0.3px 3.4px 2.7px rgba(0, 0, 0, 0.035),
-    0.6px 5.8px 4.6px rgba(0, 0, 0, 0.043);
+    0.6px 5.8px 4.6px rgba(220, 220, 220, 0.043);
 }
 .roomsedit {
   display: flex;

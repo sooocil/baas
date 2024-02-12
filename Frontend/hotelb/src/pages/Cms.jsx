@@ -9,6 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { CmsNav } from "../Component/cms/CmsNav";
 import { CmsOverview } from "../Component/cms/CmsOverview";
+import { RoomsCard } from "../Component/Home/RoomsCard";
 
 const Cms = () => {
   const title = "CMS";
