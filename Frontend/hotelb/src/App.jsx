@@ -12,13 +12,16 @@ import { CmsProfile } from "./Component/cms/CmsProfile";
 import { CmsOverview } from "./Component/cms/CmsOverview";
 import { CmsNotification } from "./Component/cms/CmsNotification";
 import { RoomDetail } from "./pages/RoomDetailPage/RoomDetail";
+import { UpdatePage } from "./Component/cms/Modals/UpdatePage";
+import { RoomContents } from "./Component/Home/roomContens";
+import { CmsGuests } from "./Component/cms/CmsGuests";
 
 function App() {
   return (
     <div>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/roomdetail" element={<RoomDetail />} />
+        <Route path="/roomdetail/:id" element={<RoomDetail />} />
 
         <Route path="/fav" element={<Fav />} />
         <Route path="/login" element={<Login />} />
@@ -28,7 +31,11 @@ function App() {
         <Route path="/cms/rooms" element={<CmsRooms />} />
         <Route path="/cms/booking" element={<CmsBookings />} />
         <Route path="/cms/profile" element={<CmsProfile />} />
+        <Route path="/cms/guests" element={<CmsGuests />} />
+
         <Route path="/cms/notification" element={<CmsNotification />} />
+        <Route path="/cms/rooms/update/:id" element={<UpdatePage />} />
+        <Route path="/roomContent/:id" element={<RoomContents />} />
       </Routes>
     </div>
   );

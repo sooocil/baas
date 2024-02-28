@@ -36,13 +36,18 @@ export const CmsNav = (props) => {
           </a>
         </li>
         <li>
+          <a href="/cms/guests" tabIndex={-1}>
+            Guests
+          </a>
+        </li>
+        <li>
           <a href="/cms/rooms" tabIndex={-1}>
             Rooms
           </a>
         </li>
         <li>
           <a href="/cms/booking" tabIndex={-1}>
-            Booking
+            Bookings
           </a>
         </li>
         <li>

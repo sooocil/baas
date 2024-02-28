@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../css/home.css";
 import HomeNav from "../Component/HomeNav";
 import { RoomsCard } from "../Component/Home/RoomsCard";
-import img1 from "../assets/img3.jpg";
+import img1 from "../assets/homebg1.jpg";
 // import { roomdata } from "../Component/Home/roomContens.jsx";
 import axios from "axios";
 // import { useFetch } from "../hooks/useFetch";
@@ -12,7 +12,6 @@ const Home = () => {
   //   "http://localhost:3001/rooms"
   // );
 
-  const [hotels, setHotels] = useState([]);
   const [roomdata, setRoomData] = useState([]);
 
   useEffect(() => {
@@ -37,7 +36,6 @@ const Home = () => {
   //   );
   // }, []);
 
-  console.log(roomdata);
   return (
     <div className="h-screen w-full">
       <div className="homeContainer bg-black m-0 p-0">
@@ -49,9 +47,11 @@ const Home = () => {
       </div>
       <div className="homeOtherContent bg-black p-20 pl-[170px]">
         {roomdata.map((roomdata, index) => {
+          // index = roomdata._id;
           return (
             <RoomsCard
               key={index}
+              id={roomdata._id}
               Image={img1}
               roomno={roomdata.roomno}
               roomname={roomdata.roomname}

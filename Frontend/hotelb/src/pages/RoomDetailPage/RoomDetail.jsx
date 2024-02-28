@@ -6,11 +6,12 @@ import { RoomDetailImage } from "./RoomDetailImage";
 import { DatePicker, Space, theme } from "antd";
 const RangePicker = DatePicker.RangePicker;
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
 export const RoomDetail = () => {
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
-
+  const id = useParams().id;
   const clearSelected = (e) => {
     setStart(null);
     setEnd(null);
@@ -24,7 +25,8 @@ export const RoomDetail = () => {
 
   const [rooms, setRooms] = useState([]);
   useEffect(() => {
-    axios.get("http://127.0.0.1:3000").then(
+    console.log(id);
+    axios.get(`http://127.0.0.1:3000/api/rooms/room/${id}`).then(
       (response) => {
         setRooms(response.data);
       },
@@ -32,7 +34,7 @@ export const RoomDetail = () => {
         console.error("Error fetching rooms:", error);
       }
     );
-  }, []);
+  }, [id]);
 
   return (
     <div className="roomDetailContainerPage absolute rounded-none w-full h-screen m-0 bg-black">
@@ -41,12 +43,14 @@ export const RoomDetail = () => {
         <RoomDetailImage />
         <div className="RoomDetailImageDescription inline-flex  bg-black ml-44 mt-10 text-white">
           <div className="detailbox min-w-2  max-w-max">
-            <h1 className="text-xl  ">Pokhara, Lakeside</h1>
-            <h1 className="text-3xl ">Hotel Paradise</h1>
+            <h1 className="text-3xl  ">{rooms.roomno}</h1>
             <p className="text-xs mt-4 text-green-500">
               Next Available 12/12/2021
             </p>
-            <p className="text-sm mt-4 font-serif w-1/2 text-justify">
+            <p
+              style={{ textTransform: "capitalize " }}
+              className="max-w-[900px] mt-4 text-sm leading-6 col-start-1 sm:col-span-2 lg:mt-6 lg:row-start-4 lg:col-span-1 dark:text-slate-400"
+            >
               {rooms.description}
             </p>
           </div>

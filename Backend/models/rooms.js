@@ -17,7 +17,8 @@ const RoomsSchema = new mongoose.Schema(
     image: {
       type: String,
       required: false,
-      default: "https://www.thespruce.com/thmb/",
+      default:
+        "https://www.thespruce.com/thmb/YefNFk-UAUbheFEAev3ixwLc4hQ=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/BackyardPhoto-071ed957d96f4e6ebe2e74d94cb56927.jpeg",
     },
   },
   { timestamps: true }

@@ -61,6 +61,12 @@ app.post("/login", async (req, res) => {
   }
 });
 
+app.get("/users", (req, res) => {
+  User.find({})
+    .then((User) => res.json(User))
+    .catch((err) => res.send("Error: " + err));
+});
+
 app.post("/addrooms", async (req, res) => {
   const { roomno, description, roomtype, capacity, acnonac, rent, status } =
     req.body;
@@ -95,11 +101,29 @@ app.get("/", (req, res) => {
     .catch((err) => res.send("Error: " + err));
 });
 
-app.put("/update/:id", (req, res) => {
+app.get("/getrooms/:id", (req, res) => {
   const id = req.params.id;
-  Room.findByIdAndUpdate(id)
+  Room.find({})
     .then((rooms) => res.json(rooms))
     .catch((err) => res.send("Error: " + err));
+});
+
+app.put("/update/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const updatedRoomData = req.body; // Retrieve updated room data from request body
+    Room.findByIdAndUpdate(id, { $set: updatedRoomData }, { new: true })
+      .then((room) => {
+        if (!room) {
+          return res.status(404).json({ message: "Room not found" });
+        }
+        res.json(room);
+      })
+      .catch((err) => res.status(500).send("Error: " + err));
+  } catch (error) {
+    console.error("Error updating room:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 });
 
 app.delete("/deleteroom/:id", async (req, res) => {

@@ -31,6 +31,7 @@ const Signup = () => {
           toast.success("Signed Up", {
             theme: "dark",
           });
+          navigate(`/login`);
           setnavmsg(true);
         }, 1000);
       }

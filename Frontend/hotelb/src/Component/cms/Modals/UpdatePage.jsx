@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-export const UpdateRoom = ({ roomId, onCancel }) => {
-  const id = useParams();
+export const UpdatePage = () => {
+  const rumid = useParams().id;
+  console.log(rumid);
+
   const [roomData, setRoomData] = useState({
     roomno: "",
     description: "",
@@ -16,31 +18,22 @@ export const UpdateRoom = ({ roomId, onCancel }) => {
     status: "Available",
   });
 
+  const onCancel = () => {
+    useNavigate(`/cms/rooms`);
+  };
+
   useEffect(() => {
-    const id = roomData._id;
     axios
-      .get(`http://localhost:3000/update/${id}`)
+      .get(`http://localhost:3000/api/rooms/find/${rumid}`)
       .then((response) => {
         setRoomData(response.data);
+        console.log(roomData);
       })
       .catch((error) => {
         console.error("Error fetching room data:", error);
       });
-  }, [id]);
+  }, []);
 
-  const RoomUpdater = (id) => {
-    const roomId = id;
-    axios.put(`http://localhost:3000/update/${roomId}`, roomData);
-    setTimeout(() => {
-      window.location.reload(true);
-    }, 1000);
-    toast.success("Room updated successfully!", {
-      autoClose: 1000,
-      position: "top-right",
-      theme: "dark",
-      className: "success-toast",
-    });
-  };
   const handleChange = (e) => {
     const { name, value } = e.target;
     setRoomData((prevData) => ({
@@ -49,13 +42,23 @@ export const UpdateRoom = ({ roomId, onCancel }) => {
     }));
   };
 
-  const handleSubmit = async (e, _id) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const roomId = _id;
     try {
-      await axios.put(`http://localhost:3000/update/${roomId}`, roomData);
+      const updatedRoomData = {
+        roomno: roomData.roomno,
+        description: roomData.description,
+        roomtype: roomData.roomtype,
+        capacity: roomData.capacity,
+        acnonac: roomData.acnonac,
+        rent: roomData.rent,
+        status: roomData.status,
+      };
+
+      await axios.put(`http://localhost:3000/update/${rumid}`, updatedRoomData);
       setTimeout(() => {
         window.location.reload(true);
+        window.location.href = `/cms/rooms`;
       }, 1500);
       toast.success("Room updated successfully!", {
         autoClose: 1000,
@@ -65,7 +68,12 @@ export const UpdateRoom = ({ roomId, onCancel }) => {
       });
     } catch (error) {
       console.error("Error updating room:", error);
-      // Handle error here, e.g., show an error message to the user
+      toast.error("Failed to update room. Please try again later.", {
+        autoClose: 3000,
+        position: "top-right",
+        theme: "dark",
+        className: "error-toast",
+      });
     }
   };
 
@@ -85,7 +93,6 @@ export const UpdateRoom = ({ roomId, onCancel }) => {
           <div className="maininputdiv">
             <div className="leftinputs ">
               <label htmlFor="roomnumber">Room Number</label>
-              <label htmlFor="roomnumber">name {roomData._id}</label>
 
               <input
                 type="number"
@@ -161,10 +168,13 @@ export const UpdateRoom = ({ roomId, onCancel }) => {
               </select>
             </div>
             <div className="buttominputs">
-              <button type="submit" onClick={handleSubmit(roomData._id)}>
+              <button
+                type="submit"
+                onClick={(e) => handleSubmit(e, roomData._id)}
+              >
                 Update
               </button>
-              <button onClick={onCancel}>Cancel</button>
+              <button onClick={() => useNavigate(`/cms/rooms`)}>Cancel</button>
             </div>
           </div>
         </form>

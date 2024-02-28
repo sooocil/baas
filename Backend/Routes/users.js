@@ -22,12 +22,12 @@ router.get("/checkuser/:id", verifyUser, (req, res, next) => {
 });
 
 //UPDATE
-router.put("/:id", verifyUser, updateUser);
+router.put("/update/:id", updateUser);
 //DELETE
-router.delete("/:id", verifyUser, deleteUser);
+router.delete("/delete/:id", deleteUser);
 //GET
-router.get("/:id", verifyUser, getUser);
+router.get("/get/:id", getUser);
 //GETALL
-router.get("/", verifyAdmin, getUsers);
+router.get("/", getUsers);
 
 module.exports = router;

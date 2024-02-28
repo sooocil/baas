@@ -55,7 +55,7 @@ export const AddRoom = (onCancel) => {
     >
       <ToastContainer />
 
-      <div className="roomAdder">
+      <div className="roomAdder bg-white rounded-xl">
         <form
           action=""
           className="flex gap-4 flex-row"
@@ -79,7 +79,7 @@ export const AddRoom = (onCancel) => {
                 id="description"
                 cols="20"
                 rows="5"
-                className="p-2 text-thin"
+                className="p-2 text-thin border-2 border-blue-300"
               ></textarea>
               <label htmlFor="roomtype">Type of the Room</label>
               <select

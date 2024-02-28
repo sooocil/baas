@@ -6,6 +6,7 @@ import { AddRoom } from "./Modals/AddRoom";
 import { UpdateRoom } from "./Modals/UpdateRoom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { Link, useNavigate } from "react-router-dom";
 
 export const CmsRooms = () => {
   const [formData, setFormData] = useState();
@@ -52,15 +53,21 @@ export const CmsRooms = () => {
       axios.delete(`http://127.0.0.1:3000/deleteroom/${roomId}`);
       setTimeout(() => {
         window.location.reload();
-      }, 1000);
+      }, 800);
       toast.success(
         "Room Deleted Successfully!",
 
-        { position: "top-right", theme: "dark", autoClose: 1000 }
+        { position: "top-right", theme: "dark", autoClose: 800 }
       );
     } catch (error) {
       console.log(error.response.data);
     }
+  };
+
+  const updaterAndIdparser = (id) => {
+    useNavigate(`/cms/rooms/update/${id}`);
+    setFormData(_id);
+    setUpdateModal(true);
   };
 
   return (
@@ -103,7 +110,7 @@ export const CmsRooms = () => {
                   <td className="border px-4 py-2">{row.roomtype}</td>
                   <td className="border px-4 py-2">{row.capacity}</td>
                   <td className="border px-4 py-2">{row.acnonac}</td>
-                  <td className="border px-4 py-2">${row.rent}</td>
+                  <td className="border px-4 py-2">Rs. {row.rent}</td>
                   <td
                     className="border px-4 py-2"
                     style={{
@@ -113,13 +120,16 @@ export const CmsRooms = () => {
                     {row.status}
                   </td>
                   <td className="border px-4 py-2">
-                    <button
-                      className="roomsedit p-2 bg-violet-400 "
-                      onClick={() => setUpdateModal(true)}
-                      style={{ color: "black" }}
+                    <Link
+                      to={`/cms/rooms/update/${row._id}`}
+                      className="roomsedit p-2  bg-violet-400 "
+                      onClick={
+                        () => console.log(row._id)
+                        // updaterAndIdparser(row._id)
+                      }
                     >
                       <Pencil size={20} />
-                    </button>
+                    </Link>
                   </td>
                   <td className="border px-4 py-2">
                     <button
