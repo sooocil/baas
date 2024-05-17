@@ -17,18 +17,25 @@ import { RoomDetail } from "./pages/RoomDetailPage/RoomDetail";
 import { UpdatePage } from "./Component/cms/Modals/UpdatePage";
 import { RoomContents } from "./Component/Home/roomContens";
 import { CmsGuests } from "./Component/cms/CmsGuests";
+import Protected from "./Component/Protected";
+import Customerhome from "./pages/customer/Customerhome";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/roomdetail/:id" element={<RoomDetail />} />
+      <Route path="/view" element={<Protected Component={Customerhome} />} />
 
       <Route path="/fav" element={<Fav />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
-      <Route path="/cms" element={<CmsOverview />} />
-      <Route path="/cms/overview" element={<CmsOverview />} />
+      <Route path="/cms/" element={<Protected Component={CmsOverview} />} />
+      <Route
+        path="/cms/overview"
+        element={<Protected Component={CmsOverview} />}
+      />
+
       <Route path="/cms/rooms" element={<CmsRooms />} />
       <Route path="/cms/booking" element={<CmsBookings />} />
       <Route path="/cms/guests" element={<CmsGuests />} />

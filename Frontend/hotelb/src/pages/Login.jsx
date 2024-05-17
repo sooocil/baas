@@ -50,7 +50,10 @@ const Login = () => {
             toast.success("Logged In Successfully", {
               theme: "dark",
             });
-            navigate("/"); // Navigate to the home page
+            navigate("/Customerhome"); // Navigate to the home page
+            // localStorage.setItem(res.cookie);
+            localStorage.setItem("token", response.data.token);
+            localStorage.setItem("user", JSON.stringify(response.data.user));
           }
         } else {
           // If the response status code is not 200, show an error toast
