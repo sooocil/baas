@@ -9,14 +9,14 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 export const CmsGuests = () => {
-  const [User, setUser] = useState([]);
   const [filteredUser, setFilteredUser] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     axios.get("http://127.0.0.1:3000/users").then(
       (response) => {
-        setUser(response.data);
+        setUsers(response.data);
       },
       (error) => {
         console.error("Error fetching guests:", error);
@@ -33,7 +33,7 @@ export const CmsGuests = () => {
         window.location.reload();
       }, 800);
       toast.success(
-        "Room Deleted Successfully!",
+        "Guest Deleted Successfully!",
 
         { position: "top-right", theme: "dark", autoClose: 800 }
       );
@@ -43,11 +43,11 @@ export const CmsGuests = () => {
   };
 
   useEffect(() => {
-    const filteredData = User.filter((user) =>
-      user.username.toLowerCase().includes(searchQuery.toLowerCase())
+    const filteredData = users.filter((users) =>
+      users.username.toLowerCase().includes(searchQuery.toLowerCase())
     );
     setFilteredUser(filteredData);
-  }, [User, searchQuery]);
+  }, [users, searchQuery]);
 
   const handleFilter = (e) => {
     setSearchQuery(e.target.value);

@@ -2,62 +2,91 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const authRoute = require("./Routes/auth.js");
 const userRoute = require("./Routes/users.js");
 const roomRoute = require("./Routes/rooms.js");
 const hotelRoute = require("./Routes/hotels.js");
 const cookie = require("cookie-parser");
-
-const User = require("./models/users");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const Room = require("./models/rooms");
+const Booking = require("./models/Bookings");
 const app = express();
+const User = require("./models/users");
 const port = 3000;
+const dotenv = require("dotenv").config();
+const errorHandler = require("./utils/error.js");
+const JWT_SECRET = "9HCl6jJ6qiArrnnoy9uS3pRbtTR5mMyG0uDIO0g4Ero";
 app.use(cors());
 app.use(cookie());
+app.use(express.urlencoded({ extended: false }));
 
 app.use(bodyParser.json());
 app.use(express.json());
 // Connect to MongoDB compass
-mongodb: mongoose.connect("mongodb://127.0.0.1:27017/hotelb", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongodb: mongoose.connect("mongodb://127.0.0.1:27017/hotelb");
 
 // Handle user registration
-app.post("/register", async (req, res) => {
+app.post("/register", async (req, res, next) => {
   const { email, username, password } = req.body;
 
+  const salt = bcrypt.genSaltSync(10);
+  const hash = bcrypt.hashSync(req.body.password, salt);
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
   try {
-    // Create a new user document and save it to the database
-    const newUser = new User({ email, username, password });
+    const newUser = new User({
+      email: req.body.email,
+      username: req.body.username,
+      password: hash,
+    });
     await newUser.save();
-    // Respond with a success message
     res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
-    res.status(500).json({
-      message: "Internal server error ",
-      error: "Username is already taken",
-    });
+    next(error);
   }
 });
 
-app.post("/login", async (req, res) => {
-  const { username, password } = req.body;
-
+const comparePassword = (plainPassword, hashedPassword) => {
+  return new Promise((resolve, reject) => {
+    bcrypt.compare(plainPassword, hashedPassword, (err, result) => {
+      if (err) {
+        reject(err);
+      }
+      resolve(result);
+    });
+  });
+};
+app.post("/login", async (req, res, next) => {
   try {
-    // Find the user in the database
-    const user = await User.findOne({ username });
-    // Check if the user exists and the password matches
-    if (user && user.password === password) {
-      // Successful login
-      res.status(200).json({ message: "Login successful" });
-    } else {
-      // Invalid credentials
-      res.status(401).json({ message: "Invalid credentials" });
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(401).json({ error: "User not found" });
     }
+
+    const match = await comparePassword(password, user.password);
+
+    if (!match) {
+      return res.status(401).json({ error: "Incorrect password" });
+    }
+
+    // Generate JWT token
+    jwt.sign(
+      { email: user.email, id: user._id },
+      JWT_SECRET,
+      {},
+      (err, token) => {
+        if (err) {
+          return res.status(500).json({ error: "Internal server error" });
+        }
+        res.cookie("access_token", token).json(user);
+      }
+    );
   } catch (error) {
-    console.error("Error during login:", error);
-    res.status(500).json({ message: "Internal server error" });
+    console.log("Error in /login:", error);
+    next(error);
   }
 });
 
@@ -152,7 +181,132 @@ app.get("/find/:id", async (req, res) => {
   }
 });
 
-app.use("/api/auth", authRoute);
+app.get("/adduser", async (req, res) => {
+  const salt = bcrypt.genSaltSync(10);
+  const hash = bcrypt.hashSync(req.body.password, salt);
+  try {
+    const newUser = new User({
+      email: req.body.email,
+      username: req.body.username,
+      password: hash,
+    });
+
+    await newUser.save();
+    res.status(201).json({ message: "User registered successfully" });
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.get("/profile", (req, res) => {
+  const { access_token } = req.cookies;
+
+  if (!access_token) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  jwt.verify(access_token, JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    const { email, id } = decoded;
+    res.json({ email, id });
+  });
+});
+
+//Reserve Room
+app.post("/reserveroom", async (req, res) => {
+  const { roomId, startDate, endDate } = req.body;
+  try {
+    const newReservation = new Reservation({
+      roomId: roomId,
+      startDate: startDate,
+      endDate: endDate,
+    });
+    await newReservation.save();
+    res.status(201).json({ message: "Room reserved successfully" });
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.post("/booking/addrooms", async (req, res) => {
+  const { roomno, username } = req.body;
+  try {
+    const newBooking = new Booking({
+      roomno: roomno,
+      username: username,
+    });
+    await newBooking
+      .save()
+      .then((booking) => res.json(booking))
+      .catch((err) => {
+        console.error("Error saving booking:", err);
+        res.status(500).json({ message: " server error", error: err.message });
+      });
+  } catch (error) {
+    res.status(500).json({
+      message: " server error",
+      error: error.message,
+    });
+  }
+});
+
+//Route that save booking room to booking database inside mongodb
+app.post("/booking/addrooms", async (req, res) => {
+  const { roomno, username } = req.body;
+  try {
+    // Find the room with the given roomno
+    const room = await Room.findOne({ roomno });
+
+    if (!room) {
+      return res.status(404).json({ message: "Room not found" });
+    }
+
+    console.log(room);
+
+    // Update the room status to "booked"
+    room.status = "booked";
+
+    // Save the updated room
+    await room
+      .save()
+      .then(() => {
+        // Save the new booking
+        const newBooking = new Booking({
+          roomno: roomno,
+          username: username,
+        });
+        newBooking
+          .save()
+          .then((booking) => res.json(booking))
+          .catch((err) => {
+            console.error("Error saving booking:", err);
+            res
+              .status(500)
+              .json({ message: " server error", error: err.message });
+          });
+      })
+      .catch((err) => {
+        console.error("Error saving room:", err);
+        res.status(500).json({ message: " server error", error: err.message });
+      });
+  } catch (error) {
+    res.status(500).json({
+      message: " server error",
+      error: error.message,
+    });
+  }
+});
+
+//Route that will be used to fetch all the booking from database
+app.get("/getbookings", (req, res) => {
+  Booking.find({})
+    .then((bookings) => res.json(bookings))
+    .catch((err) => res.send("Error: " + err));
+});
+
 app.use("/api/users", userRoute);
 app.use("/api/rooms", roomRoute);
 app.use("/api/hotels", hotelRoute);

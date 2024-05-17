@@ -6,11 +6,17 @@ import { Helmet } from "react-helmet";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "../assets/loginBg.jpeg";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const loginBg = {
+    backgroundImage: `url(${"../assets/loginBg.jpeg"})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+  };
   const navigate = useNavigate();
   const title = "login";
   function handleClick() {
@@ -20,30 +26,49 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      if (username && password) {
+      if (email && password) {
         const response = await axios.post("http://127.0.0.1:3000/login", {
-          username,
+          email,
           password,
         });
 
-        console.log(response);
-
-        // Assuming a successful login, show a success toast
-        toast.success("Logged In Success", {
-          theme: "dark",
-        });
-        setTimeout(() => {
-          // Navigate to the desired page after successful login
-          navigate("/cms");
-        }, 2000);
+        if (response.status === 200) {
+          if (response.data.error) {
+            // If there's an error message in the response, show an error toast
+            toast.error(response.data.error, {
+              position: "top-right",
+              theme: "dark",
+            });
+          } else if (response.data.message === "User not found") {
+            // If the user was not found, show an error toast
+            toast.error("User not found. Please register.", {
+              position: "top-right",
+              theme: "dark",
+            });
+          } else {
+            // If there's no error message and user found, show a success toast and navigate to the home page
+            toast.success("Logged In Successfully", {
+              theme: "dark",
+            });
+            navigate("/"); // Navigate to the home page
+          }
+        } else {
+          // If the response status code is not 200, show an error toast
+          toast.error("Login Failed. Please try again later.", {
+            position: "top-right",
+            theme: "dark",
+          });
+        }
       }
     } catch (error) {
-      toast.error("Incorrect Credentials !", {
+      // Show an error toast if there's an error with the request
+      toast.error("An error occurred. Please try again later.", {
         position: "top-right",
         theme: "dark",
       });
     }
   };
+
   return (
     <>
       <ToastContainer />
@@ -52,24 +77,23 @@ const Login = () => {
         <title>{title}</title>
       </Helmet>
       <title>Login</title>
-      <div className="login_container">
-        {/* <h1>Login</h1> */}
-        <div className="popup">
+      <div className="bg-red-400 bg-gradient-to-r from-cyan-200 to-red-300">
+        <div className="popup ">
           <form onSubmit={handlesubmit} method="post">
             <h1 className="title text-3xl">Sign IN</h1>
             <h4 className="text-xl">Login with your existing account</h4>
             <label className="text-xs self-start ml-24" htmlFor="">
-              Email or Username
+              Email :
             </label>
             <input
-              type="text"
-              placeholder="Username or Email"
+              type="email"
+              placeholder="Email"
               required
-              name="username"
-              onChange={(e) => setUsername(e.target.value)}
+              name="email"
+              onChange={(e) => setEmail(e.target.value)}
             />
             <label className="text-xs self-start ml-24" htmlFor="">
-              Password
+              Password :
             </label>
             <input
               type="password"

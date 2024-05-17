@@ -34,7 +34,6 @@ form button:hover {
   width: 500px;
   height: 50vh;
   background-color: rgb(224, 237, 255);
-  border-radius: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;

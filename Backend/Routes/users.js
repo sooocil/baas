@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 const {
+  addUser,
   updateUser,
   deleteUser,
   getUser,
@@ -20,6 +21,9 @@ router.get("/checkauthentication", verifyToken, (req, next) => {
 router.get("/checkuser/:id", verifyUser, (req, res, next) => {
   res.send("Hello user you are logged in and you can delete your account");
 });
+
+//ADDUSer
+router.post("/add", addUser);
 
 //UPDATE
 router.put("/update/:id", updateUser);

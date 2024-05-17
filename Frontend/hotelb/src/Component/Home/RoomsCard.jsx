@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 // import  RoomContents  from "./roomContens.jsx";
 import "../../css/home.css";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 export const RoomsCard = (props) => {
   const maxChars = 5;
@@ -10,6 +11,9 @@ export const RoomsCard = (props) => {
   const redWithId = () => {
     return <Link to={`/roomdetail/${propsId}`}></Link>;
   };
+  const [rooms, setRooms] = useState([]);
+
+  // fetch data of room from backend
 
   const slug = "RoomNo:" + props.roomno;
 
@@ -48,7 +52,8 @@ export const RoomsCard = (props) => {
           </p>
 
           <h1 className="recentStatus group-hover:text-purple-200 text-xs text-white">
-            Next Available {time}
+            {rooms.status}
+            {/* Room Status : {props.status === "Booked" ? "Booked" : "Available"} */}
           </h1>
         </div>
       </Link>

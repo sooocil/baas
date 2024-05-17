@@ -17,12 +17,25 @@ const Signup = () => {
   const navigate = useNavigate();
   const title = "Sign Up";
 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const validateEmail = (email) => {
+    return emailRegex.test(email);
+  };
+
+  const handleRegister = (email) => {
+    if (!validateEmail(email)) {
+      console.log("Invalid email format");
+      return;
+    }
+    // Continue with registration process
+  };
+
   const register = async (e) => {
     e.preventDefault();
 
     try {
       if (username && password) {
-        const response = await axios.post("http://127.0.0.1:3000/register", {
+        const response = await axios.post("http://127.0.0.1:3000/register/", {
           email,
           username,
           password,
@@ -36,6 +49,9 @@ const Signup = () => {
         }, 1000);
       }
     } catch (error) {
+      toast.warning("Email already exist", {
+        theme: "dark",
+      });
       console.error("Error during registration:", error);
     }
   };

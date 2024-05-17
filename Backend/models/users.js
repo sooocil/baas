@@ -6,6 +6,8 @@ const UsersSchema = new mongoose.Schema(
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     spending: { type: Number, required: false, default: 0 },
+    isAdmin: { type: Boolean, required: false, default: false },
+    bookings: { type: Number, required: false, default: 0 },
   },
   { timestamps: true }
 );

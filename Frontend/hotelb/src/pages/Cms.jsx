@@ -12,8 +12,6 @@ import { CmsOverview } from "../Component/cms/CmsOverview";
 import { RoomsCard } from "../Component/Home/RoomsCard";
 
 const Cms = () => {
-  const title = "CMS";
-
   return (
     <>
       <Helmet>
