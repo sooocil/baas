@@ -1,5 +1,6 @@
 import React from "react";
 import HomeDropdown from "./HomeDropdown";
+import ProfileDropdown from "../../pages/customer/customercomponents/ProfileDropdown";
 
 export const RoomDetailsNav = () => {
   return (
@@ -14,7 +15,7 @@ export const RoomDetailsNav = () => {
         </a>
       </div>
       <div className="nothing"></div>
-      <HomeDropdown />
+      <ProfileDropdown />
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { Routes, Route, Link, Router } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -19,12 +19,16 @@ import { RoomContents } from "./Component/Home/roomContens";
 import { CmsGuests } from "./Component/cms/CmsGuests";
 import Protected from "./Component/Protected";
 import Customerhome from "./pages/customer/Customerhome";
+import Notfound from "./pages/Notfound";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/roomdetail/:id" element={<RoomDetail />} />
+      <Route
+        path="/roomdetail/:id"
+        element={<Protected Component={RoomDetail} />}
+      />
       <Route path="/view" element={<Protected Component={Customerhome} />} />
 
       <Route path="/fav" element={<Fav />} />
@@ -43,6 +47,7 @@ function App() {
       <Route path="/cms/notification" element={<CmsNotification />} />
       <Route path="/cms/rooms/update/:id" element={<UpdatePage />} />
       <Route path="/roomContent/:id" element={<RoomContents />} />
+      <Route path="*" Component={Notfound} />
     </Routes>
   );
 }

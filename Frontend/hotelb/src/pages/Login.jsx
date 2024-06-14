@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import "../css/login.css";
 import NavBar from "../Component/NavBar";
 import { Helmet } from "react-helmet";
@@ -7,6 +7,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../assets/loginBg.jpeg";
+import { Home } from "lucide-react";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -27,36 +28,24 @@ const Login = () => {
 
     try {
       if (email && password) {
-        const response = await axios.post("http://127.0.0.1:3000/login", {
+        const user = {
           email,
           password,
-        });
+        };
+
+        const response = await axios.post("http://127.0.0.1:3000/login", user);
 
         if (response.status === 200) {
-          if (response.data.error) {
-            // If there's an error message in the response, show an error toast
+          if (response.data.token) {
+            localStorage.setItem("token", response.data.token);
+            window.location.href = "/view";
+          } else {
             toast.error(response.data.error, {
               position: "top-right",
               theme: "dark",
             });
-          } else if (response.data.message === "User not found") {
-            // If the user was not found, show an error toast
-            toast.error("User not found. Please register.", {
-              position: "top-right",
-              theme: "dark",
-            });
-          } else {
-            // If there's no error message and user found, show a success toast and navigate to the home page
-            toast.success("Logged In Successfully", {
-              theme: "dark",
-            });
-            navigate("/Customerhome"); // Navigate to the home page
-            // localStorage.setItem(res.cookie);
-            localStorage.setItem("token", response.data.token);
-            localStorage.setItem("user", JSON.stringify(response.data.user));
           }
         } else {
-          // If the response status code is not 200, show an error toast
           toast.error("Login Failed. Please try again later.", {
             position: "top-right",
             theme: "dark",
@@ -64,60 +53,84 @@ const Login = () => {
         }
       }
     } catch (error) {
-      // Show an error toast if there's an error with the request
-      toast.error("An error occurred. Please try again later.", {
+      toast.error("Login Failed. Please try again later.", {
         position: "top-right",
         theme: "dark",
       });
+      console.error("Error during login:", error);
     }
-  };
 
-  return (
-    <>
-      <ToastContainer />
+    return (
+      <>
+        <ToastContainer />
 
-      <Helmet>
-        <title>{title}</title>
-      </Helmet>
-      <title>Login</title>
-      <div className="bg-red-400 bg-gradient-to-r from-cyan-200 to-red-300">
-        <div className="popup ">
-          <form onSubmit={handlesubmit} method="post">
-            <h1 className="title text-3xl">Sign IN</h1>
-            <h4 className="text-xl">Login with your existing account</h4>
-            <label className="text-xs self-start ml-24" htmlFor="">
-              Email :
-            </label>
-            <input
-              type="email"
-              placeholder="Email"
-              required
-              name="email"
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <label className="text-xs self-start ml-24" htmlFor="">
-              Password :
-            </label>
-            <input
-              type="password"
-              placeholder="Password"
-              required
-              name="password"
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <button>Login</button>
-
-            <p>
-              Don't have an account?
-              <a href="/signup">
-                <strong>Sign Up</strong>
+        <Helmet>
+          <title>{title}</title>
+        </Helmet>
+        <title>Login</title>
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-bl from-red-100 to-violet-400">
+          <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-2xl">
+            <form onSubmit={handlesubmit} method="post" className="space-y-6">
+              <a href="/">
+                <Home />
               </a>
-            </p>
-          </form>
+
+              <h1 className="text-3xl font-bold text-center text-gray-800">
+                Sign In
+              </h1>
+              <h4 className="text-xl text-center text-gray-600">
+                Login with your existing account
+              </h4>
+              <div>
+                <label
+                  className="block text-xs font-bold text-gray-700 ml-1 mb-1"
+                  htmlFor="email"
+                >
+                  Email:
+                </label>
+                <input
+                  type="email"
+                  placeholder="Email"
+                  required
+                  name="email"
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400"
+                />
+              </div>
+              <div>
+                <label
+                  className="block text-xs font-bold text-gray-700 ml-1 mb-1"
+                  htmlFor="password"
+                >
+                  Password:
+                </label>
+                <input
+                  type="password"
+                  placeholder="Password"
+                  required
+                  name="password"
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400"
+                />
+              </div>
+              <button className="w-full py-3 mt-4 bg-cyan-500 text-white font-bold rounded-lg hover:bg-cyan-600 focus:outline-none focus:ring-2 focus:ring-cyan-400">
+                Login
+              </button>
+              <p className="text-center text-gray-600">
+                Don't have an account?
+                <a
+                  href="/signup"
+                  className="text-cyan-500 font-bold hover:underline"
+                >
+                  Sign Up
+                </a>
+              </p>
+            </form>
+          </div>
         </div>
-      </div>
-    </>
-  );
+      </>
+    );
+  };
 };
 
 export default Login;

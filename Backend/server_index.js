@@ -82,6 +82,9 @@ app.post("/login", async (req, res, next) => {
           return res.status(500).json({ error: "Internal server error" });
         }
         res.cookie("access_token", token).json(user);
+        sessionStorage.setItem("token", token);
+
+        localStorage.setItem("token", token);
       }
     );
   } catch (error) {

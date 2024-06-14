@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Navigate } from "react-router-dom";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
 
 function ProfileDropdown() {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
@@ -17,10 +18,29 @@ function ProfileDropdown() {
   };
 
   const deleteToken = async () => {
-    const response = await axios.get("http://127.0.0.1:3000/login");
+    const response = await axios.get("http://127.0.0.1:3000/");
+    if (response.status === 200) {
+      if (response.data.error) {
+        toast.error(response.data.error, {
+          position: "top-right",
+          theme: "dark",
+        });
+      } else if (response.data.message === "User not found") {
+        toast.error("User not found. Please register.", {
+          position: "top-right",
+          theme: "dark",
+        });
+      } else {
+        toast.success("Logged Out Successfully");
+        // Navigate("/Customerhome");
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+      }
+    } else {
+      console.log("can't delete token");
+    }
     localStorage.removeItem("token", response.data.token);
-    window.location.reload();
-    Navigate("/");
+    window.location.href = "/";
   };
 
   useEffect(() => {
@@ -29,16 +49,27 @@ function ProfileDropdown() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+  //fetch current logged in user's name from backen
+  const [user, setUser] = useState("");
+  useEffect(() => {
+    axios.get("http://127.0.0.1:3000/users").then((response) => {
+      setUser(response.data);
+    });
+  });
 
   return (
     <div className="relative inline-block text-left" ref={dropdownRef}>
       <div>
         <button
           type="button"
-          className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100"
+          className=" inline-flex p-[5px] justify-center h-full w-full rounded-full border border-gray-300 shadow-sm  bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100"
           onClick={handleButtonClick}
         >
-          Profile
+          <img
+            src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?q=80&w=1931&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            alt=""
+            className="h-10 object-cover w-10 rounded-full "
+          />
         </button>
       </div>
       {isDropdownVisible && (
