@@ -13,8 +13,11 @@ const Booking = require("./models/Bookings");
 const app = express();
 const User = require("./models/users");
 const port = 3000;
+const { getMinutesPastMidnight } = require('./utils/time'); // Import the utility function
+
 const dotenv = require("dotenv").config();
 const errorHandler = require("./utils/error.js");
+const verifyToken = require("./middleware/verifyToken.js")
 const JWT_SECRET = "9HCl6jJ6qiArrnnoy9uS3pRbtTR5mMyG0uDIO0g4Ero";
 app.use(cors());
 app.use(cookie());
@@ -81,12 +84,11 @@ app.post("/login", async (req, res, next) => {
         if (err) {
           return res.status(500).json({ error: "Internal server error" });
         }
-        res.cookie("access_token", token).json(user);
-        sessionStorage.setItem("token", token);
-
-        localStorage.setItem("token", token);
+        res.cookie("access_token", token).json({ user, token });
       }
     );
+    
+    
   } catch (error) {
     console.log("Error in /login:", error);
     next(error);
@@ -234,74 +236,96 @@ app.post("/reserveroom", async (req, res) => {
   }
 });
 
-app.post("/booking/addrooms", async (req, res) => {
-  const { roomno, username } = req.body;
-  try {
-    const newBooking = new Booking({
-      roomno: roomno,
-      username: username,
-    });
-    await newBooking
-      .save()
-      .then((booking) => res.json(booking))
-      .catch((err) => {
-        console.error("Error saving booking:", err);
-        res.status(500).json({ message: " server error", error: err.message });
-      });
-  } catch (error) {
-    res.status(500).json({
-      message: " server error",
-      error: error.message,
-    });
-  }
-});
+app.post("/booking/addrooms", verifyToken, async (req, res) => {
+  const { roomno, bookingDate, startTime, endDate } = req.body;
+  const { email } = req.user;
 
-//Route that save booking room to booking database inside mongodb
-app.post("/booking/addrooms", async (req, res) => {
-  const { roomno, username } = req.body;
   try {
-    // Find the room with the given roomno
-    const room = await Room.findOne({ roomno });
-
+    // Check if the room is available
+    const room = await Room.findOne({ roomno: roomno });
     if (!room) {
       return res.status(404).json({ message: "Room not found" });
+
+    }
+    if (room.status !== 'available') {
+      return res.status(400).json({ message: "Room is not available for booking" });
+      console.log()
     }
 
-    console.log(room);
+    // Proceed with booking
+    const newBooking = new Booking({
+      userID: email, // Assign the email from the decoded token
+      roomno: roomno,
+      bookingDate: new Date(bookingDate), // Ensure bookingDate is a Date object
+      startTime: getMinutesPastMidnight(startTime), // Convert startTime to minutes past midnight
+      endDate: new Date(endDate) // Ensure endDate is a Date object
+    });
 
-    // Update the room status to "booked"
-    room.status = "booked";
+    await newBooking.save()
+      .then(async (booking) => {
+        // Update room status to indicate it is booked
+        room.status = 'booked';
+        await room.save();
 
-    // Save the updated room
-    await room
-      .save()
-      .then(() => {
-        // Save the new booking
-        const newBooking = new Booking({
-          roomno: roomno,
-          username: username,
-        });
-        newBooking
-          .save()
-          .then((booking) => res.json(booking))
-          .catch((err) => {
-            console.error("Error saving booking:", err);
-            res
-              .status(500)
-              .json({ message: " server error", error: err.message });
-          });
+        res.json(booking);
       })
       .catch((err) => {
-        console.error("Error saving room:", err);
-        res.status(500).json({ message: " server error", error: err.message });
+        console.error("Error saving booking:", err);
+        res.status(500).json({ message: "Server error", error: err.message });
       });
   } catch (error) {
-    res.status(500).json({
-      message: " server error",
-      error: error.message,
-    });
+    console.error("Error in /booking/addrooms:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 });
+
+
+//Route that save booking room to booking database inside mongodb
+// app.post("/booking/addrooms", async (req, res) => {
+//   const { roomno, username } = req.body;
+//   try {
+//     // Find the room with the given roomno
+//     const room = await Room.findOne({ roomno });
+
+//     if (!room) {
+//       return res.status(404).json({ message: "Room not found" });
+//     }
+
+//     console.log(room);
+
+//     // Update the room status to "booked"
+//     room.status = "booked";
+
+//     // Save the updated room
+//     await room
+//       .save()
+//       .then(() => {
+//         // Save the new booking
+//         const newBooking = new Booking({
+//           roomno: roomno,
+//           username: username,
+//         });
+//         newBooking
+//           .save()
+//           .then((booking) => res.json(booking))
+//           .catch((err) => {
+//             console.error("Error saving booking:", err);
+//             res
+//               .status(500)
+//               .json({ message: " server error", error: err.message });
+//           });
+//       })
+//       .catch((err) => {
+//         console.error("Error saving room:", err);
+//         res.status(500).json({ message: " server error", error: err.message });
+//       });
+//   } catch (error) {
+//     res.status(500).json({
+//       message: " server error",
+//       error: error.message,
+//     });
+//   }
+// });
 
 //Route that will be used to fetch all the booking from database
 app.get("/getbookings", (req, res) => {

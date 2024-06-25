@@ -148,3 +148,5 @@ export const CmsRooms = () => {
     </div>
   );
 };
+
+export default CmsRooms;

@@ -4,12 +4,12 @@ import NavBar from "../Component/NavBar";
 import "../css/login.css";
 import { Helmet } from "react-helmet";
 import axios from "axios";
-import { Navigate, useNavigate } from "react-router-dom";
+import {  Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Home } from "lucide-react";
 
-const Signup = () => {
+export const Signup = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -71,7 +71,7 @@ const Signup = () => {
       </Helmet>
       <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-2xl">
         <form onSubmit={register} method="post" className="space-y-6">
-          <Home onClick={navigate("/")} />
+          <Home  />
           <h1 className="text-3xl font-bold text-center text-gray-800">
             Sign Up
           </h1>
@@ -114,12 +114,12 @@ const Signup = () => {
           {navmsg && <Bbutton />}
           <p className="text-center text-gray-600">
             Already have an account?
-            <a
-              href="/login"
+            <Link
+              to="/login"
               className="text-cyan-500 font-bold hover:underline"
             >
               Sign In
-            </a>
+            </Link>
           </p>
         </form>
       </div>

@@ -9,3 +9,5 @@ export const Fav = () => {
     </div>
   );
 };
+
+export default Fav;

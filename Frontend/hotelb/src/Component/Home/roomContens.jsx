@@ -24,3 +24,5 @@ export const RoomContents = () => {
 };
 
 // module.exports = { RoomContents };
+
+export default RoomContents;

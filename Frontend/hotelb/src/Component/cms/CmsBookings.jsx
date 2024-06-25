@@ -138,3 +138,5 @@ export const CmsBookings = () => {
     </div>
   );
 };
+
+export default CmsBookings;

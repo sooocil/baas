@@ -8,57 +8,68 @@ const RangePicker = DatePicker.RangePicker;
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import QRCode from "react-qr-code";
-export const RoomDetail = () => {
-  const [start, setStart] = useState("");
-  let moment;
+import { useNavigate } from "react-router-dom";
 
-  const [end, setEnd] = useState("");
-  const id = useParams().id;
-  const clearSelected = (e) => {
+export const RoomDetail = () => {
+  const [start, setStart] = useState(null);
+  const [end, setEnd] = useState(null);
+  const [rooms, setRooms] = useState([]);
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const currentDate = new Date();
+
+  useEffect(() => {
+    axios
+      .get(`http://127.0.0.1:3000/api/rooms/find/${id}`)
+      .then((response) => {
+        setRooms(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching rooms:", error);
+      });
+  }, [id]);
+
+  const clearSelected = () => {
     setStart(null);
     setEnd(null);
   };
 
-  const SetDates = (dateStrings) => {
-    setStart(dateStrings[0]);
-    setEnd(dateStrings[1]);
-    console.log(dateStrings[0], dateStrings[1]);
+  const SetDates = (start, end) => {
+    setStart(start[0]);
+    setEnd(end[0]);
+    console.log(start[0], end[0]);
   };
 
-  const [rooms, setRooms] = useState([]);
-  useEffect(() => {
-    console.log(id);
-    axios.get(`http://127.0.0.1:3000/api/rooms/find/${id}`).then(
-      (response) => {
-        setRooms(response.data);
-        console.log(rooms.status);
-      },
-      (error) => {
-        console.error("Error fetching rooms:", error);
-      }
-    );
-  }, [id]);
   const ReserveRoomInbackend = () => {
-    if (!!start && !!end) {
-      let reservation = {
-        roomId: id,
-        roomno: id.roomno,
-        startTime: new Date(start),
+    console.log(rooms.status);
 
-        endDate: new Date(end),
+    if (start && end && rooms.status === "Available") {
+      // Check if room is available
+      const reservation = {
+        roomno: rooms.roomno,
+        bookingDate: currentDate,
+        startTime: start,
+        endDate: end,
       };
-      //console.log(reservation);
-      const todayDate = new Date();
-      console.log(todayDate);
+
+      const token = localStorage.getItem("token");
+
       axios
-        .post("http://localhost:3000/booking/addrooms", reservation)
-        .then((resp) => {
-          alert("Room Reserved");
-          window.location.reload();
+        .post("http://localhost:3000/booking/addrooms", reservation, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         })
-        .catch((err) => alert("Error in reservation"));
+        .then(() => {
+          alert("Room Reserved");
+          navigate("/view"); // Redirect to view page
+        })
+        .catch((err) => {
+          console.error("Error in reservation:", err);
+          alert("Error in reservation, Problem in server!");
+        });
     } else {
-      alert("Please select a valid time range");
+      alert("Room is not available or invalid time range");
     }
   };
 
@@ -71,11 +82,7 @@ export const RoomDetail = () => {
           <div className="detailbox min-w-2  max-w-max">
             <h1 className="text-4xl  ">{rooms.roomno}</h1>
             <br />
-            <p className="text-xl  text-green-500">
-              {/* write js for checking room status if it is booked write booked else print next available dat*/}
-              {/* change color based on availibility status i.e. red for booked green for available  */}
-              {rooms.status}
-            </p>
+            <p className="text-xl ">{rooms.status}</p>
 
             <p
               style={{ textTransform: "capitalize " }}

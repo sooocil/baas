@@ -8,7 +8,7 @@ import { UpdateRoom } from "./Modals/UpdateRoom";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-export const CmsGuests = () => {
+export  const CmsGuests = () => {
   const [filteredUser, setFilteredUser] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [users, setUsers] = useState([]);
@@ -101,3 +101,5 @@ export const CmsGuests = () => {
     </div>
   );
 };
+
+export default CmsGuests;

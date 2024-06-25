@@ -10,3 +10,5 @@ export const CmsNotification = () => {
     </div>
   );
 };
+
+export default CmsNotification;

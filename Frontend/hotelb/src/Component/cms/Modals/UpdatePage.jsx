@@ -182,3 +182,6 @@ export const UpdatePage = () => {
     </div>
   );
 };
+
+
+export default UpdatePage;

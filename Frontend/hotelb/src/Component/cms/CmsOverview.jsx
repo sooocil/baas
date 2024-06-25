@@ -40,3 +40,5 @@ export const CmsOverview = () => {
     </div>
   );
 };
+
+export default CmsOverview;

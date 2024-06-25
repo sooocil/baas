@@ -15,7 +15,7 @@ const items = [
     ),
   },
   {
-    key: "1",
+    key: "2", // Updated key to be unique
     label: (
       <a
         href="/signup"
@@ -46,4 +46,5 @@ export const HomeDropdown = () => (
     </Space>
   </Space>
 );
+
 export default HomeDropdown;
