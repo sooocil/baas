@@ -259,7 +259,6 @@ app.post("/booking/addrooms", verifyToken, async (req, res) => {
   const { email } = req.user;
 
   try {
-    // Check if the room is available
     const room = await Room.findOne({ roomno: roomno });
     if (!room) {
       return res.status(404).json({ message: "Room not found" });
@@ -299,52 +298,9 @@ app.post("/booking/addrooms", verifyToken, async (req, res) => {
   }
 });
 
-//Route that save booking room to booking database inside mongodb
-// app.post("/booking/addrooms", async (req, res) => {
-//   const { roomno, username } = req.body;
-//   try {
-//     // Find the room with the given roomno
-//     const room = await Room.findOne({ roomno });
+//stripe api 
 
-//     if (!room) {
-//       return res.status(404).json({ message: "Room not found" });
-//     }
 
-//     console.log(room);
-
-//     // Update the room status to "booked"
-//     room.status = "booked";
-
-//     // Save the updated room
-//     await room
-//       .save()
-//       .then(() => {
-//         // Save the new booking
-//         const newBooking = new Booking({
-//           roomno: roomno,
-//           username: username,
-//         });
-//         newBooking
-//           .save()
-//           .then((booking) => res.json(booking))
-//           .catch((err) => {
-//             console.error("Error saving booking:", err);
-//             res
-//               .status(500)
-//               .json({ message: " server error", error: err.message });
-//           });
-//       })
-//       .catch((err) => {
-//         console.error("Error saving room:", err);
-//         res.status(500).json({ message: " server error", error: err.message });
-//       });
-//   } catch (error) {
-//     res.status(500).json({
-//       message: " server error",
-//       error: error.message,
-//     });
-//   }
-// });
 
 //Route that will be used to fetch all the booking from database
 app.get("/getbookings", (req, res) => {

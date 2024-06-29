@@ -29,7 +29,7 @@ export const DatePickerpick = () => {
         className="rangePicker placeholder-text-white text-black bg-white hover:border-blue-500 border-2 text-2xl hover:bg-white  p-1 hover:rounded-md transition-all"
         size="large"
         color="black"
-        placeholder={["When"]}
+        placeholder={["From", "To"]}
         capture="hover"
         variant="filled"
         onChange={checkValue}

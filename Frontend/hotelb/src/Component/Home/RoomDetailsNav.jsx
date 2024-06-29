@@ -14,8 +14,6 @@ export const RoomDetailsNav = () => {
           BAAS
         </a>
       </div>
-      <div className="nothing"></div>
-      <ProfileDropdown />
     </div>
   );
 };

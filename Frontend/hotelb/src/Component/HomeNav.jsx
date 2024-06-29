@@ -13,7 +13,7 @@ export const HomeNav = () => {
         <a
           href={"/view"}
           tabIndex={-1}
-          className="select-none text-3xl  cursor-pointer"
+          className="select-none text-3xl  cursor-pointer fotn-pink"
         >
           BAAS
         </a>

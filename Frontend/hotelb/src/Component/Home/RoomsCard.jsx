@@ -24,7 +24,7 @@ export const RoomsCard = (props) => {
   const slug = "RoomNo:" + props.roomno;
 
   return (
-    <div className="group cardContainer p-2 m-2 sticky">
+    <div className="group cardContainer p-2 m-2 sticky  ">
       <Link to={`/roomdetail/${props.id}`} className="room-link">
         <div className="roomImageContainer rounded-sm">
           <img src={props.Image} alt="Product_img" />
@@ -36,7 +36,7 @@ export const RoomsCard = (props) => {
           <p className="hotelName text-2xl text-white">{props.roomname}</p>
           <div
             style={{ textTransform: "capitalize" }}
-            className="flex flex-row justify-start items-center gap-4"
+            className="flex flex-row justify-start items-center text-2xl gap-4"
           >
             {props.description.length > maxChars ? (
               <Link to={`/post/${props.id}`} className="description-link">
@@ -46,7 +46,7 @@ export const RoomsCard = (props) => {
                 </p>
               </Link>
             ) : (
-              <p className="text-ua-red text-white group-hover:text-purple-200 text-left text-xs">
+              <p className="  text-white group-hover:text-purple-200  text-2xl">
                 {props.description}
               </p>
             )}

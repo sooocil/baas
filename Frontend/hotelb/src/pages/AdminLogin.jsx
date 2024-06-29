@@ -62,7 +62,7 @@ const AdminLogin = () => {
               </label>
               <input
                 type="email"
-                placeholder="test@gmail.com"
+                placeholder="test@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required

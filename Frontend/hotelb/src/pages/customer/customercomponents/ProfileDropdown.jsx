@@ -55,7 +55,7 @@ function ProfileDropdown() {
     axios.get("http://127.0.0.1:3000/users").then((response) => {
       setUser(response.data);
     });
-  });
+  },[]);
 
   return (
     <div className="relative inline-block text-left" ref={dropdownRef}>
