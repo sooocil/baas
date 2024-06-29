@@ -1,19 +1,17 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import RoomDetailsNav from "../../Component/Home/RoomDetailsNav";
-import { useState, useEffect } from "react";
 import "../../css/home.css";
 import { RoomDetailImage } from "./RoomDetailImage";
-import { DatePicker, Space, theme } from "antd";
-const RangePicker = DatePicker.RangePicker;
+import { DatePicker, Space, Tooltip } from "antd";
+const { RangePicker } = DatePicker;
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import QRCode from "react-qr-code";
-import { useNavigate } from "react-router-dom";
 
 export const RoomDetail = () => {
   const [start, setStart] = useState(null);
   const [end, setEnd] = useState(null);
-  const [rooms, setRooms] = useState([]);
+  const [rooms, setRooms] = useState({});
   const { id } = useParams();
   const navigate = useNavigate();
   const currentDate = new Date();
@@ -34,10 +32,9 @@ export const RoomDetail = () => {
     setEnd(null);
   };
 
-  const SetDates = (start, end) => {
-    setStart(start[0]);
-    setEnd(end[0]);
-    console.log(start[0], end[0]);
+  const SetDates = (dates) => {
+    setStart(dates ? dates[0] : null);
+    setEnd(dates ? dates[1] : null);
   };
 
   const ReserveRoomInbackend = () => {
@@ -105,12 +102,17 @@ export const RoomDetail = () => {
               />
             </Space>
 
-            <button
-              onClick={ReserveRoomInbackend}
-              className="bg-white  p-2 mt-2 flex-1justify-center self-end w-full text-black hover:bg-black hover:text-white rounded-md"
-            >
-              Reserve
-            </button>
+            <Tooltip title={rooms.status === "Booked" ? "Already booked" : ""}>
+              <button
+                onClick={ReserveRoomInbackend}
+                disabled={rooms.status === "Booked"}
+                className={`bg-white p-2 mt-2 flex-1 justify-center self-end w-full text-black hover:bg-black hover:text-white rounded-md ${
+                  rooms.status === "Booked" ? "cursor-not-allowed" : ""
+                }`}
+              >
+                Reserve
+              </button>
+            </Tooltip>
           </div>
         </div>
       </div>

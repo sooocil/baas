@@ -55,6 +55,7 @@ const Home = () => {
               Image={img1}
               roomno={roomdata.roomno}
               roomname={roomdata.roomname}
+              status={roomdata.status}
               rent={roomdata.rent}
               description={roomdata.description}
             />

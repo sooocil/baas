@@ -41,7 +41,8 @@ export const RoomsCard = (props) => {
             {props.description.length > maxChars ? (
               <Link to={`/post/${props.id}`} className="description-link">
                 <p className="text-ua-red text-white group-hover:text-purple-200 text-left text-xs cursor-pointer">
-                  {props.description}+ ...
+                  {props.description}{" "}
+                  <span className="font-serif opacity-80">Read more</span>...
                 </p>
               </Link>
             ) : (
@@ -50,6 +51,14 @@ export const RoomsCard = (props) => {
               </p>
             )}
           </div>
+          <p
+            className={`text-white ${
+              props.status === "booked" ? "text-red-500" : "text-green-500"
+            }`}
+          >
+            {props.status}
+          </p>
+
           <p className="group-hover:text-purple-200 hotelRent text-2xl text-white">
             Rs {props.rent}
           </p>

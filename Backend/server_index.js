@@ -11,13 +11,15 @@ const jwt = require("jsonwebtoken");
 const Room = require("./models/rooms");
 const Booking = require("./models/Bookings");
 const app = express();
+const multer = require("multer");
+
 const User = require("./models/users");
 const port = 3000;
-const { getMinutesPastMidnight } = require('./utils/time'); // Import the utility function
+const { getMinutesPastMidnight } = require("./utils/time"); // Import the utility function
 
 const dotenv = require("dotenv").config();
 const errorHandler = require("./utils/error.js");
-const verifyToken = require("./middleware/verifyToken.js")
+const verifyToken = require("./middleware/verifyToken.js");
 const JWT_SECRET = "9HCl6jJ6qiArrnnoy9uS3pRbtTR5mMyG0uDIO0g4Ero";
 app.use(cors());
 app.use(cookie());
@@ -69,7 +71,7 @@ app.post("/login", async (req, res, next) => {
       return res.status(401).json({ error: "User not found" });
     }
 
-    const match = await comparePassword(password, user.password);
+    const match = await bcrypt.compare(password, user.password);
 
     if (!match) {
       return res.status(401).json({ error: "Incorrect password" });
@@ -77,7 +79,7 @@ app.post("/login", async (req, res, next) => {
 
     // Generate JWT token
     jwt.sign(
-      { email: user.email, id: user._id },
+      { email: user.email, id: user._id, isAdmin: user.isAdmin },
       JWT_SECRET,
       {},
       (err, token) => {
@@ -87,8 +89,6 @@ app.post("/login", async (req, res, next) => {
         res.cookie("access_token", token).json({ user, token });
       }
     );
-    
-    
   } catch (error) {
     console.log("Error in /login:", error);
     next(error);
@@ -101,10 +101,24 @@ app.get("/users", (req, res) => {
     .catch((err) => res.send("Error: " + err));
 });
 
+// Configure Multer
+
+
+app.use(express.json());
+
+app.use(express.urlencoded({ extended: true }));
+
 app.post("/addrooms", async (req, res) => {
-  const { roomno, description, roomtype, capacity, acnonac, rent, status } =
-    req.body;
+  const { roomno, description, roomtype, capacity, acnonac, rent, status } = req.body;
+
   try {
+    // Check if the room number already exists
+    const existingRoom = await Room.findOne({ roomno: roomno });
+    if (existingRoom) {
+      console.error("Room number already exists:", roomno);
+      return res.status(400).json({ message: "Room number already exists" });
+    }
+
     const newRoom = new Room({
       roomno: roomno,
       description: description,
@@ -114,20 +128,24 @@ app.post("/addrooms", async (req, res) => {
       rent: rent,
       status: status,
     });
-    await newRoom
-      .save()
+
+    await newRoom.save()
       .then((room) => res.json(room))
       .catch((err) => {
         console.error("Error saving room:", err);
-        res.status(500).json({ message: " server error", error: err.message });
+        res.status(500).json({ message: "Server error", error: err.message });
       });
   } catch (error) {
-    res.status(500).json({
-      message: " server error",
+    console.error("Server error:", error);
+    res.status(500).json({  
+      message: "Server error",
       error: error.message,
     });
   }
 });
+
+
+app.use("/uploads", express.static("uploads"));
 
 app.get("/", (req, res) => {
   Room.find({})
@@ -245,11 +263,12 @@ app.post("/booking/addrooms", verifyToken, async (req, res) => {
     const room = await Room.findOne({ roomno: roomno });
     if (!room) {
       return res.status(404).json({ message: "Room not found" });
-
     }
-    if (room.status !== 'available') {
-      return res.status(400).json({ message: "Room is not available for booking" });
-      console.log()
+    if (room.status !== "Available") {
+      return res
+        .status(400)
+        .json({ message: "Room is not available for booking" });
+      console.log();
     }
 
     // Proceed with booking
@@ -258,13 +277,14 @@ app.post("/booking/addrooms", verifyToken, async (req, res) => {
       roomno: roomno,
       bookingDate: new Date(bookingDate), // Ensure bookingDate is a Date object
       startTime: getMinutesPastMidnight(startTime), // Convert startTime to minutes past midnight
-      endDate: new Date(endDate) // Ensure endDate is a Date object
+      endDate: new Date(endDate), // Ensure endDate is a Date object
     });
 
-    await newBooking.save()
+    await newBooking
+      .save()
       .then(async (booking) => {
         // Update room status to indicate it is booked
-        room.status = 'booked';
+        room.status = "booked";
         await room.save();
 
         res.json(booking);
@@ -278,7 +298,6 @@ app.post("/booking/addrooms", verifyToken, async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 });
-
 
 //Route that save booking room to booking database inside mongodb
 // app.post("/booking/addrooms", async (req, res) => {

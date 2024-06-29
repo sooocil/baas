@@ -1,20 +1,20 @@
-  import React, { useEffect } from "react";
-  import { useNavigate } from "react-router-dom";
+// ProtectedRoute.js
+import React from 'react';
+import { Navigate } from 'react-router-dom';
 
-  const Protected = (props) => {
-    const { Component } = props;
-    const navigate = useNavigate();
-    useEffect(() => {
-      let login = localStorage.getItem("token");
-      if (!login) {
-        navigate("/login");
-      }
-    },[]);
-    return (
-      <div>
-        <Component />
-      </div>
-    );
-  };
+const Protected = ({ component: Component, path, ...rest }) => {
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
 
-  export default Protected;
+  if (!token) {
+    return <Navigate to="/admin" />;
+  }
+
+  if ( role !== "admin") {
+    return <Navigate to="/admin" />;
+  }
+
+  return <Component  />;
+};
+
+export default Protected;
