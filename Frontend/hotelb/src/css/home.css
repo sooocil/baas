@@ -56,7 +56,7 @@ h1{
 }
 
 .rangePicker::placeholder {
-  color: black;
+  color: rgb(15, 4, 237);
   opacity: 1;
 }
 

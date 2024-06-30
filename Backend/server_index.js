@@ -34,34 +34,43 @@ mongodb: mongoose.connect("mongodb://127.0.0.1:27017/hotelb");
 app.post("/register", async (req, res, next) => {
   const { email, username, password } = req.body;
 
-  const salt = bcrypt.genSaltSync(10);
-  const hash = bcrypt.hashSync(req.body.password, salt);
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,8}(\.[a-z]{2,8})?$/;
+  const usernameRegex = /^[a-zA-Z0-9]+$/;
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ message: "Invalid email format" });
+  }
+
+  if (!usernameRegex.test(username) || username.length < 3) {
+    return res.status(400).json({ message: "Username must be at least 3 characters and alphanumeric" });
+  }
+
+  if (password.length < 6) {
+    return res.status(400).json({ message: "Password must be at least 6 characters" });
+  }
+
+  const salt = bcrypt.genSaltSync(10);
+  const hash = bcrypt.hashSync(password, salt);
 
   try {
     const newUser = new User({
-      email: req.body.email,
-      username: req.body.username,
+      email,
+      username,
       password: hash,
     });
     await newUser.save();
     res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
-    next(error);
+    if (error.code === 11000) {
+      res.status(400).json({ message: "Email already exists" });
+    } else {
+      next(error);
+    }
   }
 });
 
-const comparePassword = (plainPassword, hashedPassword) => {
-  return new Promise((resolve, reject) => {
-    bcrypt.compare(plainPassword, hashedPassword, (err, result) => {
-      if (err) {
-        reject(err);
-      }
-      resolve(result);
-    });
-  });
-};
+
+
 app.post("/login", async (req, res, next) => {
   try {
     const { email, password } = req.body;
